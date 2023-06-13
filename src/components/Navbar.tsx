@@ -8,6 +8,7 @@ import SearchFillIcon from './ui/icons/SearchFillIcon';
 import NewIcon from './ui/icons/NewIcon';
 import NewFillIcon from './ui/icons/NewFillIcon';
 import { usePathname } from 'next/navigation';
+import ColorButton from './ui/ColorButton';
 
 const menu = [
   {
@@ -42,6 +43,7 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+          <ColorButton text='Sign in' onClick={() => {}} />
         </ul>
       </nav>
     </div>
