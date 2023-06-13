@@ -29,20 +29,43 @@ export default {
     {
       title: 'Comments',
       name: 'comments',
-      type: 'document',
-      fields: [
-        {
-          title: 'Author',
-          name: 'author',
-          type: 'reference',
-          to: [{type: 'user'}],
-        },
+      type: 'array',
+      of: [
         {
           title: 'Comment',
           name: 'comment',
-          type: 'string',
+          type: 'document',
+          fields: [
+            {
+              title: 'Author',
+              name: 'author',
+              type: 'reference',
+              to: [{type: 'user'}],
+            },
+            {
+              title: 'Comment',
+              name: 'comment',
+              type: 'string',
+            },
+          ],
         },
       ],
     },
   ],
+  preview: {
+    select: {
+      title: 'comments.0.comment',
+      authorName: 'author.name',
+      authorUsername: 'author.username',
+      media: 'photo',
+    },
+    prepare(selection) {
+      const {title, authorName, authorUsername, media} = selection
+      return {
+        title,
+        subtitle: `by ${authorName} (${authorUsername})`,
+        media,
+      }
+    },
+  },
 }
