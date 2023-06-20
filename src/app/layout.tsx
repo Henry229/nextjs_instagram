@@ -18,7 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' className={openSans.className}>
-      <body className='w-full max-w-screen-xl mx-auto overflow-auto'>
+      <body
+        className='w-full max-w-screen-xl mx-auto overflow-auto'
+        suppressHydrationWarning={true}
+      >
         <AuthContext>
           <header className='sticky top-0 z-10 bg-white border-b'>
             <Navbar />
