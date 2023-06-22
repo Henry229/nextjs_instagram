@@ -1,6 +1,7 @@
 import { getUserForProfile } from '@/service/user';
 import NotFound from './not-found';
 import UserProfile from '@/components/UserProfile';
+import UserPosts from '@/components/UserPosts';
 
 type Props = {
   params: { username: string };
@@ -13,5 +14,10 @@ export default async function UserPage({ params: { username } }: Props) {
   if (!user) {
     NotFound();
   }
-  return <UserProfile user={user} />;
+  return (
+    <section className='w-full'>
+      <UserProfile user={user} />
+      <UserPosts user={user} />
+    </section>
+  );
 }
