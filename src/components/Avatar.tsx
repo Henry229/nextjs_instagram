@@ -1,5 +1,4 @@
-type AvatarSize = 'small' | 'medium' | 'large';
-
+type AvatarSize = 'small' | 'medium' | 'large' | 'xlarge';
 type Props = {
   image?: string | null;
   size?: AvatarSize;
@@ -13,11 +12,10 @@ export default function Avatar({
 }: Props) {
   return (
     <div className={getContainerStyle(size, highlight)}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {/* eslint-disable-next-line @next/next/no-img-element*/}
       <img
-        className={`bg-white object-cover rounded-full ${getImageSizeStyle(
-          size
-        )}`}
+        className={`bg-white object-cover rounded-full 
+        ${getImageSizeStyle(size).image}`}
         alt='user profile'
         src={image ?? undefined}
         referrerPolicy='no-referrer'
@@ -31,30 +29,37 @@ function getContainerStyle(size: AvatarSize, highlight: boolean): string {
   const highlightStyle = highlight
     ? 'bg-gradient-to-bl from-fuchsia-600 via-rose-500 to-amber-300'
     : '';
-  const sizeStyle = getContainerSize(size);
-  return `${baseStyle} ${highlightStyle} ${sizeStyle}`;
+  const { container } = getImageSizeStyle(size);
+  return `${baseStyle} ${highlightStyle} ${container}`;
 }
 
-function getContainerSize(size: AvatarSize): string {
+type ImageSizeStyle = {
+  container: string;
+  image: string;
+};
+function getImageSizeStyle(size: AvatarSize): ImageSizeStyle {
   switch (size) {
     case 'small':
-      return 'w-9 h-9';
+      return {
+        container: 'w-9 h-9',
+        image: 'w-[34px] h-[34px] p-[0.1rem]',
+      };
     case 'medium':
-      return 'w-11 h-11';
+      return {
+        container: 'w-11 h-11',
+        image: 'w-[42px] h-[42px] p-[0.1rem]',
+      };
     case 'large':
-      return 'w-[68px] h-[68px]';
+      return {
+        container: 'w-[68px] h-[68px]',
+        image: 'w-16 h-16 p-[0.2rem]',
+      };
+    case 'xlarge':
+      return {
+        container: 'w-[142px] h-[142px]',
+        image: 'w-[138px] h-[138px] p-[0.3rem]',
+      };
     default:
-      return 'w-9 h-9';
-  }
-}
-
-function getImageSizeStyle(size: AvatarSize): string {
-  switch (size) {
-    case 'small':
-      return 'w-[34px] h-[34px] p-[0.1rem]';
-    case 'medium':
-      return 'w-[42px] h-[42px] p-[0.1rem]';
-    case 'large':
-      return 'w-16 h-16 p-[0.2rem]';
+      throw new Error(`Unsupported type size: ${size}`);
   }
 }
