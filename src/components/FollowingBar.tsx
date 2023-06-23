@@ -1,5 +1,5 @@
 'use client';
-import { DetailUser } from '@/model/user';
+import { HomeUser } from '@/model/user';
 import Link from 'next/link';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 import useSWR from 'swr';
@@ -7,7 +7,7 @@ import Avatar from './Avatar';
 import ScrollableBar from './ui/ScrollableBar';
 
 export default function FollowingBar() {
-  const { data, isLoading: loading, error } = useSWR<DetailUser>('/api/me');
+  const { data, isLoading: loading, error } = useSWR<HomeUser>('/api/me');
   // const users = data?.following;
   const users = data?.following && [
     ...data?.following,
@@ -16,7 +16,7 @@ export default function FollowingBar() {
   ];
 
   return (
-    <section className='flex items-center justify-center w-full p-4 mb-4 rounded-lg shadow-sm shadow-neutral-300 min-h-[90px] overflow-x-auto'>
+    <section className='w-full flex justify-center items-center p-4 shadow-sm shadow-neutral-300 mb-4 rounded-lg min-h-[90px] overflow-x-auto relative z-0'>
       {loading ? (
         <PropagateLoader size={8} color='red' />
       ) : (
