@@ -3,6 +3,12 @@ import { redirect } from 'next/navigation';
 import { getProviders } from 'next-auth/react';
 import SignIn from '@/components/SignIn';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Signing',
+  description: 'Signup or Login to Instantgram',
+};
 
 type Props = {
   searchParams: {
