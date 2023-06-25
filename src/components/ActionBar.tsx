@@ -8,6 +8,7 @@ import BookmarkFillIcon from './ui/icons/BookmarkFillIcon';
 import { SimplePost } from '@/model/post';
 import { useSession } from 'next-auth/react';
 import { useSWRConfig } from 'swr';
+import usePosts from '@/hooks/post';
 
 type Props = {
   post: SimplePost;
@@ -21,14 +22,22 @@ export default function ActionBar({ post }: Props) {
   // );
   const liked = user ? likes.includes(user.username) : false;
   const [bookmarked, setBookmarked] = useState(false);
-  const { mutate } = useSWRConfig();
+  // const { mutate } = useSWRConfig();
+  // to make custom hook
+  // 아래의 의미는 커스텀 훅인 usePosts() 를 호출하면 내가 좋아요를 처리할 수 있는 setLike함수를 받아온다는 의미이다.
+  const { setLike } = usePosts();
   const handleLike = (like: boolean) => {
-    fetch('api/likes', {
-      method: 'PUT',
-      body: JSON.stringify({ id, like }),
-      // }).then(() => setLiked(like));
-    }).then(() => mutate('/api/posts'));
+    if (user) {
+      setLike(post, user.username, like);
+    }
   };
+  // const handleLike = (like: boolean) => {
+  //   fetch('api/likes', {
+  //     method: 'PUT',
+  //     body: JSON.stringify({ id, like }),
+  //     // }).then(() => setLiked(like));
+  //   }).then(() => mutate('/api/posts'));
+  // };
   return (
     <>
       <div className='flex justify-between px-4 my-2'>

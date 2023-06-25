@@ -1,13 +1,12 @@
 'use client';
-import { SimplePost } from '@/model/post';
-import useSWR from 'swr';
 import PostListCard from './PostListCard';
 import GridSpinner from './ui/GridSpinner';
+import usePosts from '@/hooks/post';
 
 export default function PostList() {
-  const { data: posts, isLoading: loading } =
-    useSWR<SimplePost[]>('/api/posts');
-  console.log(posts);
+  const { posts, isLoading: loading } = usePosts();
+  //   useSWR<SimplePost[]>('/api/posts');
+  // console.log(posts); -> custom hook인 usePosts()를 만들어서 위의 로직은 필요없어짐
 
   return (
     <section>
