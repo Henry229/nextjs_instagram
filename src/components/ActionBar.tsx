@@ -1,21 +1,23 @@
 import HeartIcon from './ui/icons/HeartIcon';
 import BookmarkIcon from './ui/icons/BookmarkIcon';
 import { parseDate } from '@/util/date';
-import { useState } from 'react';
+// import { useState } from 'react';
 import ToggleButton from './ui/ToggleButton';
 import HeartFillIcon from './ui/icons/HeartFillIcon';
 import BookmarkFillIcon from './ui/icons/BookmarkFillIcon';
-import { SimplePost } from '@/model/post';
-import { useSession } from 'next-auth/react';
-import { useSWRConfig } from 'swr';
+import { Comment, SimplePost } from '@/model/post';
+// import { useSession } from 'next-auth/react';
+// import { useSWRConfig } from 'swr';
 import usePosts from '@/hooks/post';
 import useMe from '@/hooks/me';
+import CommentForm from './CommentForm';
 
 type Props = {
   post: SimplePost;
   children?: React.ReactNode;
+  onComment: (comment: Comment) => void;
 };
-export default function ActionBar({ post, children }: Props) {
+export default function ActionBar({ post, children, onComment }: Props) {
   const { id, likes, createdAt } = post;
   const { user, setBookmark } = useMe();
   const { setLike } = usePosts();
@@ -44,6 +46,10 @@ export default function ActionBar({ post, children }: Props) {
   //     // }).then(() => setLiked(like));
   //   }).then(() => mutate('/api/posts'));
   // };
+
+  const handleComment = (comment: string) => {
+    user && onComment({ comment, username: user.username, image: user.image });
+  };
   return (
     <>
       <div className='flex justify-between px-4 my-2'>
@@ -75,6 +81,7 @@ export default function ActionBar({ post, children }: Props) {
           {parseDate(createdAt)}
         </p>
       </div>
+      <CommentForm onPostComment={handleComment} />
     </>
   );
 }

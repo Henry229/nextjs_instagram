@@ -1,19 +1,27 @@
-import { FullPost, SimplePost } from '@/model/post';
-import userSWR from 'swr';
+import { SimplePost } from '@/model/post';
+// import userSWR from 'swr';
 import Image from 'next/image';
 import PostUserAvatar from './PostUserAvatar';
 import ActionBar from './ActionBar';
-import CommentForm from './CommentForm';
+// import CommentForm from './CommentForm';
 import Avatar from './Avatar';
+import useFullPosts from '@/hooks/postSingle';
+// import useMe from '@/hooks/me';
 
 type Props = {
   post: SimplePost;
 };
 
 export default function PostDetail({ post }: Props) {
-  const { id, userImage, username, image, createdAt, likes } = post;
-  const { data } = userSWR<FullPost>(`/api/posts/${id}`);
+  const { id, userImage, username, image } = post;
+  // const { data } = userSWR<FullPost>(`/api/posts/${id}`);
+  const { post: data, postComment } = useFullPosts(id);
+  // const { user } = useMe();
   const comments = data?.comments;
+
+  // const handlePostComment = (comment: Comment) => {
+  //   postComment(comment);
+  // }; 전달 받은 인를 postComment에 인자로 전달하니까 굳이 인자로 만들 필요없다.
 
   return (
     <section className='flex w-full h-full'>
@@ -48,8 +56,8 @@ export default function PostDetail({ post }: Props) {
               )
             )}
         </ul>
-        <ActionBar post={post} />
-        <CommentForm />
+        <ActionBar post={post} onComment={postComment} />
+        {/* <CommentForm onPostComment={handlePostComment} /> */}
       </div>
     </section>
   );
