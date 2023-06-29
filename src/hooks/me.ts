@@ -10,6 +10,13 @@ async function updateBookmark(postId: string, bookmark: boolean) {
   }).then((res) => res.json());
 }
 
+async function updateFollow(targetId: string, follow: boolean) {
+  return fetch('/api/follow', {
+    method: 'PUT',
+    body: JSON.stringify({ id: targetId, follow }),
+  }).then((res) => res.json());
+}
+
 export default function useMe() {
   const { data: user, isLoading, error, mutate } = useSWR<HomeUser>('/api/me');
   // const { mutate } = useSWRConfig();
@@ -39,5 +46,13 @@ export default function useMe() {
     },
     [user, mutate]
   );
-  return { user, isLoading, error, setBookmark };
+
+  const toggleFollow = useCallback(
+    (targetId: string, follow: boolean) => {
+      return mutate(updateFollow(targetId, follow), { populateCache: false }); // populateCache: false인 이유는 updateFollow로 리턴한 값으로 cache값을 대체하고 싶지 않기 떄문
+    },
+    [mutate]
+  );
+
+  return { user, isLoading, error, setBookmark, toggleFollow };
 }
